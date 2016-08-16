@@ -1,0 +1,9 @@
+{
+  "ext": "js json coffee",
+  "ignoreRoot": [
+    ".git",
+    "README.md",
+    "src/client",
+    "src/display"
+  ]
+}
