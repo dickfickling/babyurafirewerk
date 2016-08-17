@@ -1,5 +1,6 @@
 React = require 'react'
 MouseSketch = require '../models/MouseSketch'
+note = require './sound'
 
 module.exports = class App extends React.Component
 
@@ -19,7 +20,19 @@ module.exports = class App extends React.Component
         data.forEach ({ x, y }) =>
           @_sketch.mousemove x*window.innerWidth, y*window.innerHeight
 
+  _handleClick: (e) ->
+    px = e.clientX / window.innerWidth
+    py = e.clientY / window.innerHeight
+    console.log px, py
+    console.log 'play sound?'
+    note(py * 1000, px)()
+
   render: ->
-    <div style={ App.styles.main }>
+    <div onClick={ @_handleClick } style={ App.styles.main }>
       <div ref="container" />
     </div>
+
+
+    # <div onMouseMove={ @_handleClick } style={ App.styles.main }>
+    #   <div ref="container" />
+    # </div>
