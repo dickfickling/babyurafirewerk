@@ -16,23 +16,25 @@ module.exports = class App extends React.Component
     @props.p2p.on 'peer-msg', (data) =>
       if typeof data is 'object' and (x = data.x) and (y = data.y)
         @_sketch.mousemove x*window.innerWidth, y*window.innerHeight
+
       else if Array.isArray data
         data.forEach ({ x, y }) =>
           @_sketch.mousemove x*window.innerWidth, y*window.innerHeight
 
-  _handleClick: (e) ->
-    px = e.clientX / window.innerWidth
-    py = e.clientY / window.innerHeight
+  _playSound: ({x, y}) ->
+    px = x / window.innerWidth
+    py = y / window.innerHeight
     console.log px, py
     console.log 'play sound?'
-    note(py * 1000, px)()
+    note(py * 10000, px)()
 
   render: ->
-    <div onClick={ @_handleClick } style={ App.styles.main }>
+    <div onClick={ @_playSound } style={ App.styles.main }>
       <div ref="container" />
     </div>
-
 
     # <div onMouseMove={ @_handleClick } style={ App.styles.main }>
     #   <div ref="container" />
     # </div>
+
+
