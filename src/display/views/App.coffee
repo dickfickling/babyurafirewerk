@@ -26,25 +26,16 @@ module.exports = class App extends React.Component
         data.forEach ({ x, y }) =>
           @_sketch.mousemove x*window.innerWidth, y*window.innerHeight
 
-  # _playSound: ({clientX, clientY}) ->
-  #   px = clientX / window.innerWidth
-  #   py = clientY / window.innerHeight
-  #   console.log px, py
-  #   sd.changeFrequency py * 1000
-  #
   _changeSound: ({x, y}) ->
     console.log 'changin sound', x, y
     px = x / window.innerWidth
     py = y / window.innerHeight
-    sd.changeFrequency py * 1000000
+    freq = (py * 1000000)
+    distortionAmount = px * 1000000
+    sd.changeFrequency freq, distortionAmount, (10 * px)
 
   render: ->
     <div style={ App.styles.main }>
       <div ref="container" />
     </div>
-
-    # <div onMouseMove={ @_handleClick } style={ App.styles.main }>
-    #   <div ref="container" />
-    # </div>
-
 
