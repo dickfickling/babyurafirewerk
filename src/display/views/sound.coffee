@@ -3,17 +3,15 @@
 
 audio = new AudioContext() # global lol
 
-createSineWave = (audio, duration) ->
-  osc = audio.createOscillator()
-  osc.type = "sine"
-  osc.start audio.currentTime
 
-  # never stop if not passed in duration
+createWave = (audio, duration, type='sine') ->
+  osc = audio.createOscillator()
+  osc.type = type
+  osc.start audio.currentTime
   if duration
     osc.stop audio.currentTime + duration
 
   osc
-
 
 
 chain = (soundNodes) ->
@@ -24,7 +22,7 @@ chain = (soundNodes) ->
 # not pure. value is sideefects, returns nothing
 rampDown = (audio, value, startValue, duration) ->
   value.setValueAtTime startValue, audio.currentTime
-  value.exponentialRampToValueAtTime 0.01, audio.currentTime + duration
+  value.exponentialRampToValueAtTime .001, audio.currentTime + duration
 
 createAmplifier = (audio, startValue, duration) ->
   amplifier = audio.createGain()
@@ -52,19 +50,63 @@ createAmplifier = (audio, startValue, duration) ->
 #       audio.destination
 #     ]
 
-globalSineWave = createSineWave audio, 880
+
+# like idk lolo
+makeDistortionCurve = (amount = 50) ->
+  nSamples = 44100
+  curve = new Float32Array nSamples
+  deg = Math.PI / 180
+  for i in [0...nSamples]
+    x = i * 2 / nSamples - 1
+    curve[i] = ( 3 + amount ) * x * 20 * deg / (Math.PI + amount * Math.abs(x) )
+
+  curve
+
+
+globalSineWave = createWave audio, 880, type='sine'
+globalSquareWave = createWave audio, 880, type='square'
+
 globalGainNode = createAmplifier audio, 0.2
 
+distortion = audio.createWaveShaper()
+
+d           = new Date()
+lastChanged = d.getTime()
+
 module.exports =
-  changeFrequency: (frequency, loudness = 0.2) ->
+  changeFrequency: (frequency, distortionAmount, loudness = 0.2) ->
+    now = new Date().getTime()
+    diff =  (now - lastChanged) / 1000
+
     console.log 'frequency change', frequency
-    globalSineWave.frequency.value = frequency
+    console.log 'distort amount:', distortionAmount
+
     globalGainNode.gain.value = loudness
+    globalSineWave.frequency.value = frequency
+    globalSquareWave.frequency.value = frequency * (5 / 8)
+    distortion.curve = makeDistortionCurve distortionAmount
+
+    unless diff < 1
+      console.log 'ramping down volume'
+
+      lastChanged = now
+      # rampDown audio, globalGainNode.gain, loudness, 4
+
 
   start: (frequency, loudness=0.2) ->
+    distortion.curve = makeDistortionCurve 400
+
+    chain [
+      globalSquareWave,
+      globalGainNode,
+      distortion,
+      audio.destination
+    ]
+
     chain [
       globalSineWave,
       globalGainNode,
+      distortion,
       audio.destination
     ]
 
