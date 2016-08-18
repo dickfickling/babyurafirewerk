@@ -25,6 +25,7 @@ module.exports = class App extends React.Component
       else if Array.isArray data
         data.forEach ({ x, y }) =>
           @_sketch.mousemove x*window.innerWidth, y*window.innerHeight
+          @_changeSound {x, y}
 
   _changeSound: ({x, y}) ->
     console.log 'changin sound', x, y
