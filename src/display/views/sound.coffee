@@ -21,8 +21,10 @@ chain = (soundNodes) ->
 
 # not pure. value is sideefects, returns nothing
 rampDown = (audio, value, startValue, duration) ->
+  # value.exponentialRampToValueAtTime .001, audio.currentTime + duration
+  #
   value.setValueAtTime startValue, audio.currentTime
-  value.exponentialRampToValueAtTime .001, audio.currentTime + duration
+  value.linearRampToValueAtTime 0.0, audio.currentTime + duration
 
 createAmplifier = (audio, startValue, duration) ->
   amplifier = audio.createGain()
@@ -81,16 +83,20 @@ module.exports =
     console.log 'frequency change', frequency
     console.log 'distort amount:', distortionAmount
 
-    globalGainNode.gain.value = loudness
     globalSineWave.frequency.value = frequency
     globalSquareWave.frequency.value = frequency * (5 / 8)
     distortion.curve = makeDistortionCurve distortionAmount
 
-    unless diff < 1
-      console.log 'ramping down volume'
+    # rampDown audio, globalGainNode.gain, loudness, 1
 
-      lastChanged = now
-      # rampDown audio, globalGainNode.gain, loudness, 4
+    globalGainNode.gain.setValueAtTime loudness, audio.currentTime
+    globalGainNode.gain.linearRampToValueAtTime 0.0, audio.currentTime + 1
+
+    # unless diff < 1
+    #   console.log 'ramping down volume'
+
+    #   lastChanged = now
+    #   rampDown audio, globalGainNode.gain, loudness, 1
 
 
   start: (frequency, loudness=0.2) ->
