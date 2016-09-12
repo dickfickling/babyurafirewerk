@@ -15,6 +15,7 @@ module.exports = class MouseSketch
 
     @sketch.mousemove = =>
       @mousemove @sketch.touches[0].x, @sketch.touches[0].y
+      @mousemove window.innerWidth-@sketch.touches[0].x, window.innerHeight-@sketch.touches[0].y
 
   mousemove: (x, y) =>
     for i in [0..4]
@@ -22,7 +23,7 @@ module.exports = class MouseSketch
 
 
   spawn: (x, y) =>
-    if @particles.length > 800
+    if @particles.length > 3600
       return
 
     p = new Particle x, y, 5 + (Math.random() * 35)
@@ -39,7 +40,7 @@ module.exports = class MouseSketch
 
   update: =>
     @particles = @particles.filter (p) =>
-      p.alive and p.move(@particles.length > 400)
+      p.alive and p.move(@particles.length > 3000)
 
 
   draw: =>
