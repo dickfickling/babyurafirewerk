@@ -16,6 +16,8 @@ module.exports = class MouseSketch
     @sketch.mousemove = =>
       @mousemove @sketch.touches[0].x, @sketch.touches[0].y
       @mousemove window.innerWidth-@sketch.touches[0].x, window.innerHeight-@sketch.touches[0].y
+      @mousemove @sketch.touches[0].x, window.innerHeight-@sketch.touches[0].y
+      @mousemove window.innerWidth-@sketch.touches[0].x, @sketch.touches[0].y
 
   mousemove: (x, y) =>
     for i in [0..4]
