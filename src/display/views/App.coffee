@@ -58,6 +58,7 @@ module.exports = class App extends React.Component
       percentY = touch.clientY / window.innerHeight
       msg = { x: percentX, y: percentY, type: e.type }
       msgs.push msg
+      @_changeSound msg
     @props.p2p.emit 'peer-msg', msgs
     e.preventDefault()
 

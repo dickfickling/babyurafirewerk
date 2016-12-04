@@ -6,7 +6,6 @@ fs            = new MemoryFS()
 
 config.entry =
   display: './src/display'
-  client: './src/client'
 
 compiler = webpack config
 

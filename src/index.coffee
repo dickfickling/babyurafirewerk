@@ -23,9 +23,6 @@ app.get '/', (req, res) -> res.redirect '/display'
 app.get '/display', (req, res) ->
   res.sendFile path.resolve __dirname, 'static', 'display.html'
 
-app.get '/client', (req, res) ->
-  res.sendFile path.resolve __dirname, 'static', 'client.html'
-
 app.get '/icon.png', (req, res) ->
   res.sendFile path.resolve __dirname, 'static', 'icon.png'
 

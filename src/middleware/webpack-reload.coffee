@@ -6,7 +6,6 @@ config        = require './webpack-config'
 
 config.entry =
   display: ['webpack-hot-middleware/client', './src/display']
-  client: ['webpack-hot-middleware/client', './src/client']
 config.plugins = [ new webpack.HotModuleReplacementPlugin() ]
 
 compiler = webpack config
