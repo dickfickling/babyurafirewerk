@@ -1,6 +1,7 @@
 Particle = require './Particle'
 Sketch = require 'sketch-js'
-COLORS = [ '#69D2E7', '#A7DBD8', '#E0E4CC', '#F38630', '#FA6900', '#FF4E50', '#F9D423' ]
+#COLORS = [ '#69D2E7', '#A7DBD8', '#E0E4CC', '#F38630', '#FA6900', '#FF4E50', '#F9D423' ]
+COLORS = ['#FF0000', '#ff7878', '#FFFFFF', '#74d680', '#378b29']
 
 module.exports = class MouseSketch
 

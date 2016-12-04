@@ -4,7 +4,7 @@ module.exports =
   output  :
     filename   : '[name].js'
     path       : '/dist/'
-    publicPath : '/dist/'
+    publicPath : '/cast/dist/'
   module  :
     loaders: [
       test    : /\.(coffee|.cjsx)$/

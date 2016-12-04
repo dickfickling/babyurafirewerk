@@ -37,6 +37,9 @@ module.exports = class Particle
 
   draw: (ctx) =>
     ctx.beginPath()
-    ctx.arc @x, @y, @radius, 0, Math.PI*2
+    ctx.moveTo @x, @y
+    ctx.lineTo @x - @radius, @y + @radius * 2
+    ctx.lineTo @x + @radius, @y + @radius * 2
+    #ctx.arc @x, @y, @radius, 0, Math.PI*2
     ctx.fillStyle = @color
     ctx.fill()

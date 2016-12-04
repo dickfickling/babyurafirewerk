@@ -18,11 +18,19 @@ if process.env.NODE_ENV is 'development'
 else
   app.use require('./middleware/webpack-memory')
 
+app.get '/', (req, res) -> res.redirect '/display'
+
 app.get '/display', (req, res) ->
   res.sendFile path.resolve __dirname, 'static', 'display.html'
 
 app.get '/client', (req, res) ->
   res.sendFile path.resolve __dirname, 'static', 'client.html'
+
+app.get '/icon.png', (req, res) ->
+  res.sendFile path.resolve __dirname, 'static', 'icon.png'
+
+app.get '/startup.png', (req, res) ->
+  res.sendFile path.resolve __dirname, 'static', 'startup.png'
 
 
 # Sockets!
