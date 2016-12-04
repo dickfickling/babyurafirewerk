@@ -78,8 +78,6 @@ module.exports =
     now = new Date().getTime()
     diff =  (now - lastChanged) / 1000
 
-    console.log 'frequency change', frequency
-    console.log 'distort amount:', distortionAmount
 
     globalGainNode.gain.value = loudness
     globalSineWave.frequency.value = frequency
@@ -87,7 +85,6 @@ module.exports =
     distortion.curve = makeDistortionCurve distortionAmount
 
     unless diff < 1
-      console.log 'ramping down volume'
 
       lastChanged = now
       # rampDown audio, globalGainNode.gain, loudness, 4

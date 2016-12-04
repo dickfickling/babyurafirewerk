@@ -1,6 +1,6 @@
 React = require 'react'
 MouseSketch = require '../models/MouseSketch'
-#sd = require './sound'
+sd = require './sound'
 
 module.exports = class App extends React.Component
 
@@ -12,9 +12,9 @@ module.exports = class App extends React.Component
       color: 'white'
       cursor: 'none'
 
-  #constructor: ->
-  #  @maxFreq = 6000
-  #  sd.start(880)
+  constructor: ->
+    @maxFreq = 6000
+    sd.start(880)
 
   componentDidMount: ->
     @_sketch = new MouseSketch @refs.container
@@ -24,7 +24,7 @@ module.exports = class App extends React.Component
         @_sketch.mousemove x*window.innerWidth, (1-y)*window.innerHeight
         @_sketch.mousemove (1-x)*window.innerWidth, (1-y)*window.innerHeight
         @_sketch.mousemove (1-x)*window.innerWidth, y*window.innerHeight
-        #@_changeSound data
+        @_changeSound data
 
       else if Array.isArray data
         data.forEach (touch) =>
@@ -32,10 +32,9 @@ module.exports = class App extends React.Component
           @_sketch.mousemove touch.x*window.innerWidth, (1-touch.y)*window.innerHeight
           @_sketch.mousemove (1-touch.x)*window.innerWidth, (1-touch.y)*window.innerHeight
           @_sketch.mousemove (1-touch.x)*window.innerWidth, touch.y*window.innerHeight
-          #@_changeSound touch
+          @_changeSound touch
 
   _changeSound: ({x, y}) ->
-    console.log 'changin sound', x, y
     px = x / window.innerWidth
     py = y / window.innerHeight
     freq = (py * 1000000)
@@ -49,6 +48,7 @@ module.exports = class App extends React.Component
     percentX = e.clientX / window.innerWidth
     percentY = e.clientY / window.innerHeight
     msg = { x: percentX, y: percentY, type: e.type }
+    @_changeSound msg
     @props.p2p.emit 'peer-msg', msg
 
   touch: (e) =>
